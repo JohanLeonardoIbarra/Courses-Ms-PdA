@@ -6,6 +6,7 @@ const courseRouter = Router();
 
 courseRouter.post('/', validateToken, courseController.create);
 courseRouter.get('/', validateToken, courseController.list);
+courseRouter.get('/:slug', validateToken, courseController.findCourse);
 courseRouter.post('/add/student', validateToken, courseController.addStudent);
 
 export default courseRouter;

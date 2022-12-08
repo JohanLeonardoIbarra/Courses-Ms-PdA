@@ -9,7 +9,7 @@ interface ConfigI {
 }
 
 let config: ConfigI = {
-  db_uri: 'mongodb://root:example@localhost:27017/',
+  db_uri: 'mongodb://mongo-user:mongo-pass@mongo_db:27017/',
   port: 8081,
   secretKey: 'nonSecretKey',
 };

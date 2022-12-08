@@ -9,9 +9,13 @@ const validateToken = (
   const header = request.headers.authorization;
   if (header?.startsWith('Bearer ')) {
     const token = header.split(' ')[1];
-    request.body.user = Token.verify(token);
-    next();
-  } else return response.sendStatus(418);
+    try {
+      request.body.user = Token.verify(token);
+      next();
+    } catch (err) {
+      return response.sendStatus(403);
+    }
+  } else return response.sendStatus(401);
 };
 
 export default validateToken;

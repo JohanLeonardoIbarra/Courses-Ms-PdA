@@ -17,6 +17,16 @@ const courseSchema = new Schema({
   code: {
     type: String,
     required: true,
+    unique: true,
+  },
+  status: {
+    type: Boolean,
+    require: true,
+    default: true,
+  },
+  slug: {
+    type: String,
+    require: true,
   },
 });
 

@@ -9,23 +9,26 @@ const courseController = {
       return response.sendStatus(400);
     if (user.role !== 'teacher') return response.sendStatus(401);
 
-    const courseRepeated = await Course.findOne({ name });
+    const courseRepeated = await Course.findOne({ $or: [{ name }, { code }] });
 
     if (courseRepeated)
       return response
         .status(400)
         .send({ message: 'This course already exist' });
 
+    const slug = name.replace(' ', '_');
+
     const course = new Course({
       name,
       description,
       code,
       teacher: user.email,
+      slug,
     });
 
     course.save();
 
-    return response.sendStatus(200);
+    return response.send({ success: true });
   },
 
   list: async (request: Request, response: Response): Promise<Response> => {
@@ -48,6 +51,16 @@ const courseController = {
     return response.sendStatus(401);
   },
 
+  findCourse: async (request: Request, response: Response) => {
+    const slug = request.params.slug;
+
+    const course = await Course.findOne({ slug });
+
+    if (!course) return response.sendStatus(404);
+
+    return response.send(course);
+  },
+
   addStudent: async (request: Request, response: Response) => {
     const { user, email, course } = request.body;
 
@@ -66,7 +79,7 @@ const courseController = {
 
       if (!status) return response.sendStatus(404);
 
-      return response.sendStatus(200);
+      return response.send({ success: true });
     } catch (error) {
       console.log(error);
 
