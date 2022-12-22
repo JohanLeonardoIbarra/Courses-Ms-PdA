@@ -52,9 +52,9 @@ const courseController = {
   },
 
   findCourse: async (request: Request, response: Response) => {
-    const slug = request.params.slug;
+    const id = request.params.id;
 
-    const course = await Course.findOne({ slug });
+    const course = await Course.findById(id);
 
     if (!course) return response.sendStatus(404);
 
